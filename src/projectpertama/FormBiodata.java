@@ -4,12 +4,12 @@
  */
 package projectpertama;
 
-import java.sql.PreparedStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.sql.ResultSet;
+import java.util.List;
+import projectpertama.dao.MahasiswaDAO;
+import projectpertama.dao.MahasiswaDAOImpl;
+import projectpertama.model.Mahasiswa;
 
 /**
  *
@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 public class FormBiodata extends javax.swing.JFrame {
 
     DefaultTableModel model;
+    private MahasiswaDAO dao; // Menggunakan interface DAO
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormBiodata.class.getName());
 
@@ -26,6 +27,7 @@ public class FormBiodata extends javax.swing.JFrame {
      */
     public FormBiodata() {
         initComponents();
+        dao = new MahasiswaDAOImpl(); // Inisialisasi implementasi DAO
         initTable();
         loadData();
     }
@@ -250,46 +252,32 @@ public class FormBiodata extends javax.swing.JFrame {
 
     private void loadData() {
         model.setRowCount(0);
-        try {
-            Connection conn = Koneksi.getConnection();
-            if (conn == null) {
-                JOptionPane.showMessageDialog(this, "Koneksi ke database gagal. Pastikan XAMPP (MySQL) sudah aktif.");
-                return;
-            }
-            String sql = "SELECT * FROM tbl_mahasiswa";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                Object[] row = {
-                    rs.getString("nim"),
-                    rs.getString("nama"),
-                    rs.getString("prodi"),
-                    rs.getString("alamat")
-                };
-                model.addRow(row);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+        List<Mahasiswa> list = dao.getAll(); // Ambil data lewat DAO
+        for (Mahasiswa m : list) {
+            Object[] row = {
+                m.getNim(),
+                m.getNama(),
+                m.getProdi(),
+                m.getAlamat()
+            };
+            model.addRow(row);
         }
     }
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
+        Mahasiswa m = new Mahasiswa();
+        m.setNim(txtNim.getText());
+        m.setNama(txtNama.getText());
+        m.setProdi(txtProdi.getText());
+        m.setAlamat(txtAlamat.getText());
+        
         try {
-            Connection conn = Koneksi.getConnection();
-            String sql = "INSERT INTO tbl_mahasiswa (nim, nama, prodi, alamat) VALUES (?, ?, ?, ?)";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, txtNim.getText());
-            pst.setString(2, txtNama.getText());
-            pst.setString(3, txtProdi.getText());
-            pst.setString(4, txtAlamat.getText());
-            pst.executeUpdate();
+            dao.insert(m); // Simpan lewat DAO
             JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
             loadData();
             clearForm();
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan data: " + e.getMessage());
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(this, "Gagal menyimpan data: " + e.getMessage());
         }
     }//GEN-LAST:event_btnInsertActionPerformed
 
@@ -316,21 +304,18 @@ public class FormBiodata extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMahasiswaMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        Mahasiswa m = new Mahasiswa();
+        m.setNim(txtNim.getText());
+        m.setNama(txtNama.getText());
+        m.setProdi(txtProdi.getText());
+        m.setAlamat(txtAlamat.getText());
+        
         try {
-            String sql = "UPDATE tbl_mahasiswa SET nama=?, prodi=?, alamat=? WHERE nim=?";
-            Connection conn = Koneksi.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
-            
-            pst.setString(1, txtNama.getText());
-            pst.setString(2, txtProdi.getText());
-            pst.setString(3, txtAlamat.getText());
-            pst.setString(4, txtNim.getText());
-            
-            pst.executeUpdate();
+            dao.update(m); // Update lewat DAO
             JOptionPane.showMessageDialog(this, "Data berhasil diupdate");
             loadData();
             clearForm();
-        } catch (SQLException e) {
+        } catch (Exception e) {
              JOptionPane.showMessageDialog(this, "Gagal update data: " + e.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -343,16 +328,11 @@ public class FormBiodata extends javax.swing.JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin menghapus data ini?", "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM tbl_mahasiswa WHERE nim=?";
-                Connection conn = Koneksi.getConnection();
-                PreparedStatement pst = conn.prepareStatement(sql);
-                pst.setString(1, txtNim.getText());
-                pst.executeUpdate();
-                
+                dao.delete(txtNim.getText()); // Hapus lewat DAO
                 JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
                 loadData();
                 clearForm();
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Gagal hapus data: " + e.getMessage());
             }
         }

@@ -4,11 +4,10 @@
  */
 package projectpertama;
 import java.awt.HeadlessException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import projectpertama.dao.UserDAO;
+import projectpertama.dao.UserDAOImpl;
+import projectpertama.model.User;
 /**
  *
  * @author Lenovo
@@ -185,17 +184,21 @@ public class Login extends javax.swing.JFrame {
     
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            Connection conn = Koneksi.getConnection();
+            UserDAO dao = new UserDAOImpl();
+            User user = dao.login(txtUsername.getText(), String.valueOf(txtPassword.getPassword()));
 
-            String sql = "SELECT * FROM user_login WHERE username=? AND password=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            if (user != null) {
+                JOptionPane.showMessageDialog(this, "Login berhasil");
+                new Home().setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Username atau password salah");
+            }
 
-            pst.setString(1, txtUsername.getText());
-            pst.setString(2, String.valueOf(txtPassword.getPassword()));
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnLoginActionPerformed
                 JOptionPane.showMessageDialog(this, "Login berhasil");
                 new Home().setVisible(true);
                 this.dispose();

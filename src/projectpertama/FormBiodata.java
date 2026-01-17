@@ -30,6 +30,23 @@ public class FormBiodata extends javax.swing.JFrame {
         dao = new MahasiswaDAOImpl(); // Inisialisasi implementasi DAO
         initTable();
         loadData();
+        styleUI();
+    }
+
+    private void styleUI() {
+        this.setLocationRelativeTo(null); // Center window
+        this.setTitle("Aplikasi Data Mahasiswa - UAS");
+        
+        // Table Styling
+        tblMahasiswa.setRowHeight(25);
+        tblMahasiswa.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        tblMahasiswa.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        
+        // Button Styling
+        javax.swing.JButton[] buttons = {btnInsert, btnUpdate, btnHapus, btnSelect};
+        for (javax.swing.JButton btn : buttons) {
+            btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        }
     }
 
     /**

@@ -83,6 +83,29 @@ public class MahasiswaDAOImpl implements MahasiswaDAO {
     }
 
     @Override
+    public List<Mahasiswa> search(String keyword) {
+        List<Mahasiswa> list = new ArrayList<>();
+        String sql = "SELECT * FROM tbl_mahasiswa WHERE nim LIKE ? OR nama LIKE ?";
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, "%" + keyword + "%");
+            pst.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Mahasiswa m = new Mahasiswa();
+                    m.setNim(rs.getString("nim"));
+                    m.setNama(rs.getString("nama"));
+                    m.setProdi(rs.getString("prodi"));
+                    m.setAlamat(rs.getString("alamat"));
+                    list.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MahasiswaDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    @Override
     public Mahasiswa getByNim(String nim) {
         String sql = "SELECT * FROM tbl_mahasiswa WHERE nim=?";
         Mahasiswa m = null;

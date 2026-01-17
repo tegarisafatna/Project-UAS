@@ -22,4 +22,7 @@ public interface MahasiswaDAO {
     
     // (Opsional) Mengambil satu mahasiswa berdasarkan NIM
     Mahasiswa getByNim(String nim);
+    
+    // Pencarian data mahasiswa
+    List<Mahasiswa> search(String keyword);
 }

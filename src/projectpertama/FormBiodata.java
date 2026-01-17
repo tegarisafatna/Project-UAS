@@ -252,7 +252,24 @@ public class FormBiodata extends javax.swing.JFrame {
 
     private void loadData() {
         model.setRowCount(0);
-        List<Mahasiswa> list = dao.getAll(); // Ambil data lewat DAO
+        List<Mahasiswa> list = dao.getAll(); // Ambil semua data
+        for (Mahasiswa m : list) {
+            Object[] row = {
+                m.getNim(),
+                m.getNama(),
+                m.getProdi(),
+                m.getAlamat()
+            };
+            model.addRow(row);
+        }
+    }
+    
+    private void loadData(String keyword) {
+        model.setRowCount(0);
+        List<Mahasiswa> list = dao.search(keyword); // Ambil data hasil pencarian
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Data tidak ditemukan");
+        }
         for (Mahasiswa m : list) {
             Object[] row = {
                 m.getNim(),
@@ -265,6 +282,12 @@ public class FormBiodata extends javax.swing.JFrame {
     }
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
+        if (txtNim.getText().trim().isEmpty() || txtNama.getText().trim().isEmpty() || 
+            txtProdi.getText().trim().isEmpty() || txtAlamat.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Harap isi semua kolom data!");
+            return;
+        }
+        
         Mahasiswa m = new Mahasiswa();
         m.setNim(txtNim.getText());
         m.setNama(txtNama.getText());
@@ -321,7 +344,12 @@ public class FormBiodata extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
-        loadData();
+        String keyword = JOptionPane.showInputDialog(this, "Cari berdasarkan NIM atau Nama:", "Cari Data", JOptionPane.QUESTION_MESSAGE);
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            loadData(keyword);
+        } else {
+            loadData();
+        }
     }//GEN-LAST:event_btnSelectActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed

@@ -21,6 +21,38 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        styleUI();
+    }
+    
+    private void styleUI() {
+        // Posisi di tengah layar
+        this.setLocationRelativeTo(null);
+        
+        // Warna Background Modern (Flat Design)
+        // Header: Emerald Green / Blueish
+        jPanel1.setBackground(new java.awt.Color(41, 128, 185)); 
+        // Body: Light Gray / White
+        jPanel2.setBackground(new java.awt.Color(236, 240, 241));
+        
+        // Typography
+        jLabel1.setForeground(java.awt.Color.WHITE); // Welcome Text
+        jLabel1.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 28));
+        
+        jLabel2.setForeground(new java.awt.Color(236, 240, 241)); // Subtitle
+        jLabel2.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        
+        // Input Fields Styling
+        txtUsername.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        txtPassword.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        
+        // Buttons
+        btnLogin.setBackground(new java.awt.Color(46, 204, 113)); // Green
+        btnLogin.setForeground(java.awt.Color.WHITE);
+        btnLogin.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        
+        btnCancel.setBackground(new java.awt.Color(231, 76, 60)); // Red
+        btnCancel.setForeground(java.awt.Color.WHITE);
+        btnCancel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
     }
 
     /**
@@ -60,12 +92,12 @@ public class Login extends javax.swing.JFrame {
             .addGap(0, 58, Short.MAX_VALUE)
         );
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 3, 36)); // NOI18N
-        jLabel1.setText("WELCOME");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        jLabel1.setText("LOGIN SYSTEM");
         jLabel1.setToolTipText("");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("Please Insert Your Password And Username");
+        jLabel2.setText("Silakan masukkan Username & Password");
 
         jLabel3.setFont(new java.awt.Font("Berlin Sans FB", 0, 14)); // NOI18N
         jLabel3.setText("Username");
@@ -79,7 +111,7 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Berlin Sans FB", 0, 14)); // NOI18N
         jLabel4.setText("Password");
 
-        txtPassword.setText("jPasswordField1");
+        txtPassword.setText("");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);

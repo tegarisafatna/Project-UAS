@@ -388,6 +388,8 @@ public class FormBiodata extends javax.swing.JFrame {
         txtNama.setText("");
         txtProdi.setText("");
         txtAlamat.setText("");
+        txtNim.setEditable(true); // Enable NIM for new data
+        txtNim.requestFocus();
     }
 
     /**

@@ -17,6 +17,22 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        styleUI();
+    }
+    
+    private void styleUI() {
+        this.setLocationRelativeTo(null); // Center
+        this.setTitle("Dashboard Utama");
+        this.getContentPane().setBackground(new java.awt.Color(236, 240, 241));
+        
+        // Button Styling similar to other forms
+        javax.swing.JButton[] buttons = {btnCekdata, btnLogout};
+        for (javax.swing.JButton btn : buttons) {
+            btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+            btn.setBackground(new java.awt.Color(52, 152, 219)); // Blue
+            btn.setForeground(java.awt.Color.WHITE);
+        }
+        btnLogout.setBackground(new java.awt.Color(231, 76, 60)); // Red for Logout
     }
 
     /**
@@ -52,27 +68,31 @@ public class Home extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnCekdata)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
-                .addComponent(btnLogout)
-                .addGap(21, 21, 21))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCekdata, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(262, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogout)
-                    .addComponent(btnCekdata))
-                .addContainerGap())
+                .addGap(80, 80, 80)
+                .addComponent(btnCekdata, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        new Login().setVisible(true);
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin logout?", "Konfirmasi Logout", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            new Login().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnCekdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekdataActionPerformed
